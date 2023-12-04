@@ -24,6 +24,7 @@ const LoginPage = () => {
 
     try {
       const response = await axios.post("YOUR_LOGIN_API_ENDPOINT", formData);
+      console.log(response.data);
 
       // Handle successful login here
       console.log("Login successful:", response.data);

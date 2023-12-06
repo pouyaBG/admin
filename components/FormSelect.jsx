@@ -6,13 +6,25 @@ import axios from "axios";
 const FormSelect = () => {
   const handleSubmit = async (values, { resetForm }) => {
     try {
+      values.Pool_price = parseInt(values.Pool_price,10);
+      values.Massage_price = parseInt(values.Massage_price,10);
+      values.quantity = parseInt(values.quantity,10);
       // Send a POST request with Axios
-      const response = await axios.post("YOUR_API_ENDPOINT", values);
-      console.log("Form data sent successfully:", response.data);
-
+      const response = await axios.post(
+        "https://django-sport.iran.liara.run/api/secure/TicketShop/",
+        values,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("login"),
+          },
+        }
+      );
+      window.location.reload();
       // Reset the form after successful submission
       resetForm();
     } catch (error) {
+      console.log(typeof(values.Pool_price));
       console.log(values);
       console.error("Error submitting form:", error);
     }
@@ -32,8 +44,8 @@ const FormSelect = () => {
         }}
         onSubmit={handleSubmit}
       >
-        <Form className="space-y-4 bg-white p-6 rounded shadow-2xl ">
-          <div className="flex items-center justify-between gap-10">
+        <Form className=" w-full flex flex-col gap-1 mx-10 bg-white p-5 rounded shadow-2xl ">
+          <div className="flex items-center gap-20 ">
             <div className="mb-4">
               <label
                 htmlFor="day_name"
@@ -152,26 +164,26 @@ const FormSelect = () => {
                 <option value="80000">80000</option>
               </Field>
             </div>
-          </div>
-          <div>
-            <div className="mb-4">
-              <label
-                htmlFor="quantity"
-                className="block text-sm font-medium text-gray-600"
-              >
-                ظرفیت:
-              </label>
-              <Field
-                as="select"
-                id="quantity"
-                name="quantity"
-                className="p-2 border w-full text-black"
-              >
-                <option value="">انتخاب کنید</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-                <option value="150">150</option>
-              </Field>
+            <div>
+              <div className="mb-4">
+                <label
+                  htmlFor="quantity"
+                  className="block text-sm font-medium text-gray-600"
+                >
+                  ظرفیت:
+                </label>
+                <Field
+                  as="select"
+                  id="quantity"
+                  name="quantity"
+                  className="p-2 border w-full text-black"
+                >
+                  <option value="">انتخاب کنید</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                  <option value="150">150</option>
+                </Field>
+              </div>
             </div>
           </div>
           <button

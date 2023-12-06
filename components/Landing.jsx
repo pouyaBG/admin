@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 const LoginPage = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    email: "",
+    username: "",
     password: "",
   });
 
@@ -23,14 +23,15 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("YOUR_LOGIN_API_ENDPOINT", formData);
+      const response = await axios.post(
+        "https://django-sport.iran.liara.run/api/secure/Login/",
+        formData
+      );
       console.log(response.data);
-
-      // Handle successful login here
+      localStorage.setItem("login", response.data.access);
+      router.push("/panel")
       console.log("Login successful:", response.data);
     } catch (error) {
-      // Handle login error
-      router.push("/panel")
       console.error("Login error:", error.message);
     }
   };
@@ -45,16 +46,16 @@ const LoginPage = () => {
 
         <div className="mb-4">
           <label
-            htmlFor="email"
+            htmlFor="username"
             className="block text-sm font-medium text-gray-600"
           >
             نام کاربری:
           </label>
           <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
+            type="text"
+            id="username"
+            name="username"
+            value={formData.username}
             onChange={handleInputChange}
             className="mt-1 p-2 w-full border rounded-md"
           />
